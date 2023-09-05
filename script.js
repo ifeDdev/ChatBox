@@ -12,17 +12,17 @@ const createChatLi = (message, className) => {
     //CREATE A CHAT <LI>ELEMENT WITH PASSED MESSAGE AND CLASSNAME
     const chatLi = document.createElement("li");
     chatLi.classList.add("chat", className);
-    let chatContent = className === "outgoing" ? `<p></p>` :  ` <span class="material-symbols-outlined">smart_toy</span><p></p>`;
+    let chatContent = className === "outgoing" ? `<p>${message}</p>` :  ` <span class="material-symbols-outlined">smart_toy</span><p>${message}</p>`;
     chatLi.innerHTML = chatContent;
     chatLi.querySelector("p").textContent =message;
     return chatLi;
 }
 
-const generateResponse = (incomingChatLi) => {
-    const API_URL = "https://api.openai.com/v1/chat/completions";
-    const messageElement = incomingChatLi.querySelector("p")
+let generateResponse = (incomingChatLi) => {
+    let  API_URL = "https://api.openai.com/v1/chat/completions";
+    let messageElement = incomingChatLi.querySelector("p")
 
-    const requestOptions = {
+    let requestOptions = {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -49,13 +49,14 @@ function handleChat() {
     chatInput.style.height = `${inputInHeight}px`;
     // APPEND THE USER'S MESSAGE TO THE CHATBOX
    chatBox.appendChild(createChatLi(userMessage, "outgoing"));
-   chatBox.scroolTo(0, chatBox.scrollHeight);
+//    chatBox.scroolTo(0, chatBox.scrollHeight);
 
    setTimeout(() => {
-    const incomingChatLi = (createChatLi("Thinking.....", "incoming"));
+    let incomingChatLi = (createChatLi("Thinking.....", "incoming"));
     chatBox.appendChild(incomingChatLi);
-    chatBox.scroolTo(0, chatBox.scrollHeight);
     generateResponse(incomingChatLi);
+    chatBox.scroolTo(0, chatBox.scrollHeight);
+    
    }, 700)
 }
 chatInput.addEventListener("input",() => {
